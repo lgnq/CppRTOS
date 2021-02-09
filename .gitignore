@@ -9,3 +9,4 @@
 *.lst
 *.map
 *.elf
+bsp/mbed_lpc17xx/.sconsign.dblite
