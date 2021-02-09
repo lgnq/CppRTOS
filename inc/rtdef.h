@@ -303,14 +303,15 @@ typedef struct rt_list_node rt_list_t;                  /**< Type for lists. */
 /**
  * Base structure of Kernel object
  */
-struct rt_object
+class rt_object
 {
+public:
     char       name[RT_NAME_MAX];                       /**< name of kernel object */
     rt_uint8_t type;                                    /**< type of kernel object */
     rt_uint8_t flag;                                    /**< flag of kernel object */
     rt_list_t  list;                                    /**< list node of kernel object */
 };
-typedef struct rt_object *rt_object_t;                  /**< Type for kernel objects. */
+typedef class rt_object *rt_object_t;                  /**< Type for kernel objects. */
 
 /**
  *  The object type can be one of the follows with specific
