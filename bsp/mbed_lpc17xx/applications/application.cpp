@@ -23,8 +23,10 @@ void rt_init_thread_entry(void *parameter)
 	while (1)
 	{
 		rt_hw_led_on(LED1);
+		rt_hw_led_on(LED3);
 		rt_thread_delay(100);
 		rt_hw_led_off(LED1);
+		rt_hw_led_off(LED3);
 		rt_thread_delay(100);
 	}
 }

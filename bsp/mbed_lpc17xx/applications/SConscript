@@ -1,7 +1,7 @@
 import os
 
 src   = [Glob('*.c')]
-src  += [Glob('*.s')]
+src  += [Glob('*.cpp')]
 
 inc   = [
     os.path.abspath('.'),

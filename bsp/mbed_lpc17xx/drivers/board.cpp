@@ -14,7 +14,6 @@
 #include <rtthread.h>
 
 #include "led.h"
-#include "drv_uart.h"
 #include "board.h"
 #include "LPC17xx.h"
 

@@ -12,6 +12,15 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void rt_hw_board_init(void);
+void SysTick_Handler(void);         //EAF must have
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
