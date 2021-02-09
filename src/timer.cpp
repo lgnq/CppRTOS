@@ -83,10 +83,10 @@ static void _rt_timer_init(rt_timer_t timer, void (*timeout)(void *parameter), v
     int i;
 
     /* set flag */
-    timer->parent.flag  = flag;
+    timer->flag  = flag;
 
     /* set deactivated */
-    timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+    timer->flag &= ~RT_TIMER_FLAG_ACTIVATED;
 
     timer->timeout_func = timeout;
     timer->parameter    = parameter;
@@ -286,10 +286,10 @@ rt_err_t rt_timer_start(rt_timer_t timer)
     /* remove timer from list */
     _rt_timer_remove(timer);
     /* change status of timer */
-    timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+    timer->flag &= ~RT_TIMER_FLAG_ACTIVATED;
     rt_hw_interrupt_enable(level);
 
-    RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(timer->parent)));
+    // RT_OBJECT_HOOK_CALL(rt_object_take_hook, (&(timer->parent)));
 
     /*
      * get timeout tick,
@@ -302,7 +302,7 @@ rt_err_t rt_timer_start(rt_timer_t timer)
     level = rt_hw_interrupt_disable();
 
 #ifdef RT_USING_TIMER_SOFT
-    if (timer->parent.flag & RT_TIMER_FLAG_SOFT_TIMER)
+    if (timer->flag & RT_TIMER_FLAG_SOFT_TIMER)
     {
         /* insert timer to soft timer list */
         timer_list = rt_soft_timer_list;
@@ -362,13 +362,13 @@ rt_err_t rt_timer_start(rt_timer_t timer)
         tst_nr >>= (RT_TIMER_SKIP_LIST_MASK + 1) >> 1;
     }
 
-    timer->parent.flag |= RT_TIMER_FLAG_ACTIVATED;
+    timer->flag |= RT_TIMER_FLAG_ACTIVATED;
 
     /* enable interrupt */
     rt_hw_interrupt_enable(level);
 
 #ifdef RT_USING_TIMER_SOFT
-    if (timer->parent.flag & RT_TIMER_FLAG_SOFT_TIMER)
+    if (timer->flag & RT_TIMER_FLAG_SOFT_TIMER)
     {
         /* check whether timer thread is ready */
         if (timer_thread.stat != RT_THREAD_READY)
@@ -396,10 +396,10 @@ rt_err_t rt_timer_stop(rt_timer_t timer)
 
     /* timer check */
     RT_ASSERT(timer != RT_NULL);
-    if (!(timer->parent.flag & RT_TIMER_FLAG_ACTIVATED))
+    if (!(timer->flag & RT_TIMER_FLAG_ACTIVATED))
         return -RT_ERROR;
 
-    RT_OBJECT_HOOK_CALL(rt_object_put_hook, (&(timer->parent)));
+    // RT_OBJECT_HOOK_CALL(rt_object_put_hook, (&(timer->parent)));
 
     /* disable interrupt */
     level = rt_hw_interrupt_disable();
@@ -410,7 +410,7 @@ rt_err_t rt_timer_stop(rt_timer_t timer)
     rt_hw_interrupt_enable(level);
 
     /* change stat */
-    timer->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+    timer->flag &= ~RT_TIMER_FLAG_ACTIVATED;
 
     return RT_EOK;
 }
@@ -440,11 +440,11 @@ rt_err_t rt_timer_control(rt_timer_t timer, rt_uint8_t cmd, void *arg)
         break;
 
     case RT_TIMER_CTRL_SET_ONESHOT:
-        timer->parent.flag &= ~RT_TIMER_FLAG_PERIODIC;
+        timer->flag &= ~RT_TIMER_FLAG_PERIODIC;
         break;
 
     case RT_TIMER_CTRL_SET_PERIODIC:
-        timer->parent.flag |= RT_TIMER_FLAG_PERIODIC;
+        timer->flag |= RT_TIMER_FLAG_PERIODIC;
         break;
     }
 
@@ -493,16 +493,16 @@ void rt_timer_check(void)
 
             RT_DEBUG_LOG(RT_DEBUG_TIMER, ("current tick: %d\n", current_tick));
 
-            if ((t->parent.flag & RT_TIMER_FLAG_PERIODIC) && (t->parent.flag & RT_TIMER_FLAG_ACTIVATED))
+            if ((t->flag & RT_TIMER_FLAG_PERIODIC) && (t->flag & RT_TIMER_FLAG_ACTIVATED))
             {
                 /* start it */
-                t->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+                t->flag &= ~RT_TIMER_FLAG_ACTIVATED;
                 rt_timer_start(t);
             }
             else
             {
                 /* stop timer */
-                t->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+                t->flag &= ~RT_TIMER_FLAG_ACTIVATED;
             }
         }
         else
@@ -574,16 +574,16 @@ void rt_soft_timer_check(void)
             /* lock scheduler */
             rt_enter_critical();
 
-            if ((t->parent.flag & RT_TIMER_FLAG_PERIODIC) && (t->parent.flag & RT_TIMER_FLAG_ACTIVATED))
+            if ((t->flag & RT_TIMER_FLAG_PERIODIC) && (t->flag & RT_TIMER_FLAG_ACTIVATED))
             {
                 /* start it */
-                t->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+                t->flag &= ~RT_TIMER_FLAG_ACTIVATED;
                 rt_timer_start(t);
             }
             else
             {
                 /* stop timer */
-                t->parent.flag &= ~RT_TIMER_FLAG_ACTIVATED;
+                t->flag &= ~RT_TIMER_FLAG_ACTIVATED;
             }
         }
         else break; /* not check anymore */

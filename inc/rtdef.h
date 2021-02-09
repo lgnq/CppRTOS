@@ -415,12 +415,11 @@ struct rt_object_information
 #endif
 
 /**
- * timer structure
+ * timer class
  */
-struct rt_timer
+class rt_timer : public rt_object
 {
-    struct rt_object parent;                            /**< inherit from rt_object */
-
+public:
     rt_list_t        row[RT_TIMER_SKIP_LIST_LEVEL];
 
     void (*timeout_func)(void *parameter);              /**< timeout function */
@@ -429,7 +428,7 @@ struct rt_timer
     rt_tick_t        init_tick;                         /**< timer timeout tick */
     rt_tick_t        timeout_tick;                      /**< timeout tick */
 };
-typedef struct rt_timer *rt_timer_t;
+typedef class rt_timer *rt_timer_t;
 
 /*@}*/
 
