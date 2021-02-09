@@ -9,7 +9,7 @@ if rtconfig.PLATFORM == 'armcc':
 	src = Glob(path + '/*.c') + Glob(path + '/*_rvds.S') + Glob(comm + '/*.c')
 
 if rtconfig.PLATFORM == 'gcc':
-	src = Glob(path + '/*.c') + Glob(path + '/*_gcc.S') + Glob(comm + '/*.c') + Glob(path + '/*_init.S')
+	src = Glob(path + '/*.cpp') + Glob(path + '/*_gcc.S') + Glob(comm + '/*.cpp') + Glob(path + '/*_init.S')
 
 if rtconfig.PLATFORM == 'iar':
 	src = Glob(path + '/*.c') + Glob(path + '/*_iar.S') + Glob(comm + '/*.c')

@@ -197,7 +197,7 @@ _update_msp:
 _update_done:
 
     PUSH    {LR}
-    BL      rt_hw_hard_fault_exception
+    /* BL      rt_hw_hard_fault_exception */
     POP     {LR}
 
     ORR     LR, LR, #0x04
