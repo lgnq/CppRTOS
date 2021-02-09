@@ -1057,14 +1057,14 @@ rt_device_t rt_console_get_device(void)
  */
 rt_device_t rt_console_set_device(const char *name)
 {
-    rt_device_t new, old;
+    rt_device_t nnew, old;
 
     /* save old device */
     old = _console_device;
 
     /* find new console device */
-    new = rt_device_find(name);
-    if (new != RT_NULL)
+    nnew = rt_device_find(name);
+    if (nnew != RT_NULL)
     {
         if (_console_device != RT_NULL)
         {
@@ -1073,8 +1073,8 @@ rt_device_t rt_console_set_device(const char *name)
         }
 
         /* set new console device */
-        rt_device_open(new, RT_DEVICE_OFLAG_RDWR | RT_DEVICE_FLAG_STREAM);
-        _console_device = new;
+        rt_device_open(nnew, RT_DEVICE_OFLAG_RDWR | RT_DEVICE_FLAG_STREAM);
+        _console_device = nnew;
     }
 
     return old;
