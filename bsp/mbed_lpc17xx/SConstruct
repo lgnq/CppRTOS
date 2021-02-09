@@ -16,6 +16,7 @@ TARGET = 'rtt_mbed.' + rtconfig.TARGET_EXT
 env = Environment(tools = ['mingw'],
 	AS = rtconfig.AS, ASFLAGS = rtconfig.AFLAGS,
 	CC = rtconfig.CC, CCFLAGS = rtconfig.CFLAGS,
+    CXX = rtconfig.CXX, CXXFLAGS = rtconfig.CXXFLAGS,
 	AR = rtconfig.AR, ARFLAGS = '-rc',
 	LINK = rtconfig.LINK, LINKFLAGS = rtconfig.LFLAGS,
 
@@ -27,6 +28,7 @@ env = Environment(tools = ['mingw'],
 PROJECT    = 'mbed'
 HEX_TARGET = PROJECT + '.hex'
 BIN_TARGET = PROJECT + '.bin'
+LST_TARGET = PROJECT + '.lst'
 
 # Application some variables
 src = []
@@ -62,7 +64,9 @@ env.SideEffect(PROJECT+'.map', out)
 # Post Action
 a1 = env.AddPostAction(TARGET, rtconfig.OBJCPY + ' -Oihex ' + '$TARGET ' + HEX_TARGET)
 a2 = env.AddPostAction(TARGET, rtconfig.OBJCPY + ' -Obinary -S ' + '$TARGET ' + BIN_TARGET)
+a3 = env.AddPostAction(TARGET, rtconfig.OBJDUMP + ' -d -t -S ' + '$TARGET >' + LST_TARGET)
 env.SideEffect(HEX_TARGET, a1)
 env.SideEffect(BIN_TARGET, a2)
+env.SideEffect(LST_TARGET, a3)
 
 env.AddPostAction(TARGET, rtconfig.SIZE + ' $TARGET')

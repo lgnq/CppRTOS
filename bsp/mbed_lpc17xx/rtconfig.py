@@ -36,7 +36,7 @@ if PLATFORM == 'gcc':
 
     DEVICE = ' -mcpu=cortex-m3 -mthumb'
     CFLAGS = DEVICE
-    CXXFLAGS = CFLAGS
+    CXXFLAGS = CFLAGS + ' -fno-exceptions'
     AFLAGS = ' -c' + DEVICE + ' -x assembler-with-cpp'
     LFLAGS = DEVICE + ' -Wl,--gc-sections,-Map=mbed.map,-cref,-u,Reset_Handler -T lpc17xx.ld'
 
