@@ -320,7 +320,7 @@ rt_int32_t rt_memcmp(const void *cs, const void *ct, rt_ubase_t count)
     const unsigned char *su1, *su2;
     int res = 0;
 
-    for (su1 = cs, su2 = ct; 0 < count; ++su1, ++su2, count--)
+    for (su1 = (const unsigned char *)cs, su2 = (const unsigned char *)ct; 0 < count; ++su1, ++su2, count--)
         if ((res = *su1 - *su2) != 0)
             break;
 
