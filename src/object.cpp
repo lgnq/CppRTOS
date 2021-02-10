@@ -267,7 +267,7 @@ rt_object_t rt_object_allocate(enum rt_object_class_type type, const char *name)
     /* get object information */
     information = &rt_object_container[type];
 
-    object = (rt_object_t )RT_KERNEL_MALLOC(information->object_size);
+    object = (rt_object_t)RT_KERNEL_MALLOC(information->object_size);
     if (object == RT_NULL)
     {
         /* no memory can be allocated */
