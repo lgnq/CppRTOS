@@ -461,16 +461,11 @@ typedef class rt_timer *rt_timer_t;
 #define RT_THREAD_CTRL_INFO             0x03                /**< Get thread information. */
 
 /**
- * Thread structure
+ * Thread class
  */
-struct rt_thread
+class rt_thread : public rt_object
 {
-    /* rt object */
-    char        name[RT_NAME_MAX];                      /**< the name of thread */
-    rt_uint8_t  type;                                   /**< type of object */
-    rt_uint8_t  flags;                                  /**< thread's flags */
-
-    rt_list_t   list;                                   /**< the object list */
+public:
     rt_list_t   tlist;                                  /**< the thread list */
 
     /* stack point and entry */
@@ -503,13 +498,13 @@ struct rt_thread
     rt_ubase_t  init_tick;                              /**< thread's initialized tick */
     rt_ubase_t  remaining_tick;                         /**< remaining tick */
 
-    struct rt_timer thread_timer;                       /**< built-in thread timer */
+    class rt_timer thread_timer;                       /**< built-in thread timer */
 
-    void (*cleanup)(struct rt_thread *tid);             /**< cleanup function when thread exit */
+    void (*cleanup)(class rt_thread *tid);             /**< cleanup function when thread exit */
 
     rt_uint32_t user_data;                              /**< private user data beyond this thread */
 };
-typedef struct rt_thread *rt_thread_t;
+typedef class rt_thread *rt_thread_t;
 
 /*@}*/
 
