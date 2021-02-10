@@ -796,7 +796,7 @@ typedef class rt_device *rt_device_t;
 /**
  * Device class
  */
-struct rt_device : public rt_object
+class rt_device : public rt_object
 {
 public:
     enum rt_device_class_type type;                     /**< device type */
