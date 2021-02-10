@@ -792,14 +792,13 @@ enum rt_device_class_type
 #define RT_DEVICE_CTRL_RTC_GET_ALARM    0x12            /**< get alarm */
 #define RT_DEVICE_CTRL_RTC_SET_ALARM    0x13            /**< set alarm */
 
-typedef struct rt_device *rt_device_t;
+typedef class rt_device *rt_device_t;
 /**
- * Device structure
+ * Device class
  */
-struct rt_device
+struct rt_device : public rt_object
 {
-    struct rt_object          parent;                   /**< inherit from rt_object */
-
+public:
     enum rt_device_class_type type;                     /**< device type */
     rt_uint16_t               flag;                     /**< device flag */
     rt_uint16_t               open_flag;                /**< device open flag */

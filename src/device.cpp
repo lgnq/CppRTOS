@@ -49,7 +49,7 @@ rt_err_t rt_device_register(rt_device_t dev, const char *name, rt_uint16_t flags
     if (rt_device_find(name) != RT_NULL)
         return -RT_ERROR;
 
-    rt_object_init(&(dev->parent), RT_Object_Class_Device, name);
+    rt_object_init(dev, RT_Object_Class_Device, name);
     dev->flag = flags;
     dev->ref_count = 0;
     dev->open_flag = 0;
@@ -68,7 +68,7 @@ rt_err_t rt_device_unregister(rt_device_t dev)
 {
     RT_ASSERT(dev != RT_NULL);
 
-    rt_object_detach(&(dev->parent));
+    rt_object_detach(dev);
 
     return RT_EOK;
 }
@@ -149,7 +149,7 @@ rt_err_t rt_device_init(rt_device_t dev)
             result = dev->init(dev);
             if (result != RT_EOK)
             {
-                rt_kprintf("To initialize device:%s failed. The error code is %d\n", dev->parent.name, result);
+                rt_kprintf("To initialize device:%s failed. The error code is %d\n", dev->name, result);
             }
             else
             {
@@ -183,7 +183,7 @@ rt_err_t rt_device_open(rt_device_t dev, rt_uint16_t oflag)
             result = dev->init(dev);
             if (result != RT_EOK)
             {
-                rt_kprintf("To initialize device:%s failed. The error code is %d\n", dev->parent.name, result);
+                rt_kprintf("To initialize device:%s failed. The error code is %d\n", dev->name, result);
 
                 return result;
             }
