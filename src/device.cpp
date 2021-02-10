@@ -95,7 +95,7 @@ rt_err_t rt_device_init_all(void)
  */
 rt_device_t rt_device_find(const char *name)
 {
-    struct rt_object *object;
+    class rt_object *object;
     struct rt_list_node *node;
     struct rt_object_information *information;
 
