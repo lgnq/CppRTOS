@@ -66,6 +66,6 @@ void rt_hw_board_init(void)
 	
 #ifdef RT_USING_UART0
 	rt_hw_uart_init();
-	// rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
+	rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
 #endif
 }
