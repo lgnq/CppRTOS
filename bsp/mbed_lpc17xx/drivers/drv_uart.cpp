@@ -44,8 +44,26 @@ class rt_uart_lpc : public rt_device
 {
 public:
     /* buffer for reception */
-    rt_uint8_t read_index, save_index;
+    rt_uint8_t read_index;
+    rt_uint8_t save_index;
     rt_uint8_t rx_buffer[RT_UART_RX_BUFFER_SIZE];
+
+#if 1
+public:
+
+    // rt_uart_lpc(){}
+    // ~rt_uart_lpc(){}
+
+    // rt_err_t rx_indicate(rt_device_t dev, rt_size_t size);
+    // rt_err_t tx_complete(rt_device_t dev, void *buffer);
+
+    virtual rt_err_t init(rt_device_t dev);
+    virtual rt_err_t open(rt_device_t dev, rt_uint16_t oflag);
+    virtual rt_err_t close(rt_device_t dev);
+    virtual rt_size_t read(rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t size);
+    virtual rt_size_t write(rt_device_t dev, rt_off_t pos, const void *buffer, rt_size_t size);
+    virtual rt_err_t  control(rt_device_t dev, rt_uint8_t cmd, void *args);    
+#endif
 } uart_device;
 
 void UART0_IRQHandler(void)
@@ -72,16 +90,16 @@ void UART0_IRQHandler(void)
         rt_hw_interrupt_enable(level);
 
         /* invoke callback */
-        if (uart->rx_indicate != RT_NULL)
-        {
-            rt_size_t length;
-            if (uart->read_index > uart->save_index)
-                length = RT_UART_RX_BUFFER_SIZE - uart->read_index + uart->save_index;
-            else
-                length = uart->save_index - uart->read_index;
+        // if (uart->rx_indicate != RT_NULL)
+        // {
+        //     rt_size_t length;
+        //     if (uart->read_index > uart->save_index)
+        //         length = RT_UART_RX_BUFFER_SIZE - uart->read_index + uart->save_index;
+        //     else
+        //         length = uart->save_index - uart->read_index;
 
-            uart->rx_indicate(uart, length);
-        }
+        //     uart->rx_indicate(uart, length);
+        // }
     }
     else if (iir == IIR_RLS)
     {
@@ -92,7 +110,8 @@ void UART0_IRQHandler(void)
     return;
 }
 
-static rt_err_t rt_uart_init(rt_device_t dev)
+#if 1
+rt_err_t rt_uart_lpc::init(rt_device_t dev)
 {
     rt_uint32_t Fdiv;
     rt_uint32_t pclkdiv, pclk;
@@ -175,7 +194,7 @@ static rt_err_t rt_uart_init(rt_device_t dev)
     return RT_EOK;
 }
 
-static rt_err_t rt_uart_open(rt_device_t dev, rt_uint16_t oflag)
+rt_err_t rt_uart_lpc::open(rt_device_t dev, rt_uint16_t oflag)
 {
     RT_ASSERT(dev != RT_NULL);
     if (dev->flag & RT_DEVICE_FLAG_INT_RX)
@@ -187,7 +206,7 @@ static rt_err_t rt_uart_open(rt_device_t dev, rt_uint16_t oflag)
     return RT_EOK;
 }
 
-static rt_err_t rt_uart_close(rt_device_t dev)
+rt_err_t rt_uart_lpc::close(rt_device_t dev)
 {
     RT_ASSERT(dev != RT_NULL);
     if (dev->flag & RT_DEVICE_FLAG_INT_RX)
@@ -199,7 +218,7 @@ static rt_err_t rt_uart_close(rt_device_t dev)
     return RT_EOK;
 }
 
-static rt_size_t rt_uart_read(rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t size)
+rt_size_t rt_uart_lpc::read(rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t size)
 {
     rt_uint8_t *ptr;
     class rt_uart_lpc *uart = (class rt_uart_lpc *)dev;
@@ -246,7 +265,7 @@ static rt_size_t rt_uart_read(rt_device_t dev, rt_off_t pos, void *buffer, rt_si
     return 0;
 }
 
-static rt_size_t rt_uart_write(rt_device_t dev, rt_off_t pos, const void *buffer, rt_size_t size)
+rt_size_t rt_uart_lpc::write(rt_device_t dev, rt_off_t pos, const void *buffer, rt_size_t size)
 {
     char *ptr;
     ptr = (char *)buffer;
@@ -291,6 +310,14 @@ static rt_size_t rt_uart_write(rt_device_t dev, rt_off_t pos, const void *buffer
     return (rt_size_t) ptr - (rt_size_t) buffer;
 }
 
+rt_err_t rt_uart_lpc::control(rt_device_t dev, rt_uint8_t cmd, void *args)
+{
+    rt_err_t ret = 0;
+
+    return ret;
+}
+#endif
+
 void rt_hw_uart_init(void)
 {
     class rt_uart_lpc *uart;
@@ -304,15 +331,14 @@ void rt_hw_uart_init(void)
     uart->read_index = uart->save_index = 0;
 
     /* device interface */
-    uart->init       = rt_uart_init;
-    uart->open       = rt_uart_open;
-    uart->close      = rt_uart_close;
-    uart->read       = rt_uart_read;
-    uart->write      = rt_uart_write;
-    uart->control    = RT_NULL;
-    uart->user_data  = RT_NULL;
+    // uart->init       = rt_uart_init;
+    // uart->open       = rt_uart_open;
+    // uart->close      = rt_uart_close;
+    // uart->read       = rt_uart_read;
+    // uart->write      = rt_uart_write;
+    // uart->control    = RT_NULL;
+    // uart->user_data  = RT_NULL;
 
-    rt_device_register(uart,
-                       "uart0", RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_STREAM | RT_DEVICE_FLAG_INT_RX);
+    rt_device_register(uart, "uart0", RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_STREAM | RT_DEVICE_FLAG_INT_RX);
 }
 #endif /* end of UART */

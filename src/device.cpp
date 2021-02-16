@@ -142,7 +142,7 @@ rt_err_t rt_device_init(rt_device_t dev)
     RT_ASSERT(dev != RT_NULL);
 
     /* get device init handler */
-    if (dev->init != RT_NULL)
+    // if (dev->init != RT_NULL)
     {
         if (!(dev->flag & RT_DEVICE_FLAG_ACTIVATED))
         {
@@ -178,7 +178,7 @@ rt_err_t rt_device_open(rt_device_t dev, rt_uint16_t oflag)
     /* if device is not initialized, initialize it. */
     if (!(dev->flag & RT_DEVICE_FLAG_ACTIVATED))
     {
-        if (dev->init != RT_NULL)
+        // if (dev->init != RT_NULL)
         {
             result = dev->init(dev);
             if (result != RT_EOK)
@@ -199,7 +199,7 @@ rt_err_t rt_device_open(rt_device_t dev, rt_uint16_t oflag)
     }
 
     /* call device open interface */
-    if (dev->open != RT_NULL)
+    // if (dev->open != RT_NULL)
     {
         result = dev->open(dev, oflag);
     }
@@ -240,7 +240,7 @@ rt_err_t rt_device_close(rt_device_t dev)
         return RT_EOK;
 
     /* call device close interface */
-    if (dev->close != RT_NULL)
+    // if (dev->close != RT_NULL)
     {
         result = dev->close(dev);
     }
@@ -275,7 +275,7 @@ rt_size_t rt_device_read(rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t 
     }
 
     /* call device read interface */
-    if (dev->read != RT_NULL)
+    // if (dev->read != RT_NULL)
     {
         return dev->read(dev, pos, buffer, size);
     }
@@ -309,7 +309,7 @@ rt_size_t rt_device_write(rt_device_t dev, rt_off_t pos, const void *buffer, rt_
     }
 
     /* call device write interface */
-    if (dev->write != RT_NULL)
+    // if (dev->write != RT_NULL)
     {
         return dev->write(dev, pos, buffer, size);
     }
@@ -334,7 +334,7 @@ rt_err_t rt_device_control(rt_device_t dev, rt_uint8_t cmd, void *arg)
     RT_ASSERT(dev != RT_NULL);
 
     /* call device write interface */
-    if (dev->control != RT_NULL)
+    // if (dev->control != RT_NULL)
     {
         return dev->control(dev, cmd, arg);
     }
@@ -355,7 +355,7 @@ rt_err_t rt_device_set_rx_indicate(rt_device_t dev, rt_err_t (*rx_ind)(rt_device
 {
     RT_ASSERT(dev != RT_NULL);
 
-    dev->rx_indicate = rx_ind;
+    // dev->rx_indicate = rx_ind;
 
     return RT_EOK;
 }
@@ -373,7 +373,7 @@ rt_err_t rt_device_set_tx_complete(rt_device_t dev, rt_err_t (*tx_done)(rt_devic
 {
     RT_ASSERT(dev != RT_NULL);
 
-    dev->tx_complete = tx_done;
+    // dev->tx_complete = tx_done;
 
     return RT_EOK;
 }

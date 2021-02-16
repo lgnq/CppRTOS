@@ -805,7 +805,11 @@ public:
 
     rt_uint8_t                ref_count;                /**< reference count */
     rt_uint8_t                device_id;                /**< 0 - 255 */
+    void                     *user_data;                /**< device private data */
 
+    rt_device(){}
+    ~rt_device(){}
+#if 0
     /* device call back */
     rt_err_t (*rx_indicate)(rt_device_t dev, rt_size_t size);
     rt_err_t (*tx_complete)(rt_device_t dev, void *buffer);
@@ -817,8 +821,31 @@ public:
     rt_size_t (*read)   (rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t size);
     rt_size_t (*write)  (rt_device_t dev, rt_off_t pos, const void *buffer, rt_size_t size);
     rt_err_t  (*control)(rt_device_t dev, rt_uint8_t cmd, void *args);
+#else
+public:
+    /* device call back */
+    // virtual rt_err_t rx_indicate(rt_device_t dev, rt_size_t size);
+    // virtual rt_err_t tx_complete(rt_device_t dev, void *buffer);
 
-    void                     *user_data;                /**< device private data */
+    /* common device interface */
+    // virtual rt_err_t init(rt_device_t dev)=0;
+    // virtual rt_err_t open(rt_device_t dev, rt_uint16_t oflag)=0;
+    // virtual rt_err_t close(rt_device_t dev)=0;
+    // virtual rt_size_t read(rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t size)=0;
+    // virtual rt_size_t write(rt_device_t dev, rt_off_t pos, const void *buffer, rt_size_t size)=0;
+    // virtual rt_err_t  control(rt_device_t dev, rt_uint8_t cmd, void *args)=0;
+
+    /* device call back */
+    // rt_err_t rx_indicate(rt_device_t dev, rt_size_t size);
+    // rt_err_t tx_complete(rt_device_t dev, void *buffer);
+
+    virtual rt_err_t init(rt_device_t dev){}
+    virtual rt_err_t open(rt_device_t dev, rt_uint16_t oflag){}
+    virtual rt_err_t close(rt_device_t dev){}
+    virtual rt_size_t read(rt_device_t dev, rt_off_t pos, void *buffer, rt_size_t size){}
+    virtual rt_size_t write(rt_device_t dev, rt_off_t pos, const void *buffer, rt_size_t size){}
+    virtual rt_err_t  control(rt_device_t dev, rt_uint8_t cmd, void *args){}
+#endif
 };
 
 /**
